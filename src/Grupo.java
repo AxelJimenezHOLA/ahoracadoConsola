@@ -18,8 +18,9 @@ public class Grupo {
             return;
         }
 
-        if (jugadorActual != null) {
+        if (jugadorActual == null) {
             jugadorActual = jugadores.getFirst();
+            return;
         }
 
         if (jugadorActual != jugadores.getLast()) {
