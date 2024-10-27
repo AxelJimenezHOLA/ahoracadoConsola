@@ -1,5 +1,6 @@
 import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class JuegoAhorcado {
@@ -20,7 +21,6 @@ public class JuegoAhorcado {
         crearYNombrarJugadores(cantidadJugadores);
         metaPuntos = introducirEntero("Ingrese la meta de puntos: ",1, -1);
 
-         // Elige al primer jugador del grupo como el jugador actual
         while (!juegoTerminado()) {
             inicializarRonda();
             while (!rondaTerminada()) {
@@ -107,8 +107,10 @@ public class JuegoAhorcado {
 
     public void mostrarLetrasDescubiertas() {
         System.out.println("Letras jugadas:");
-        if (!letrasDescubiertas.isEmpty()) {
-            for (Character c : letrasDescubiertas) {
+        Iterator<Character> iterador = letrasDescubiertas.iterator();
+        if (iterador.hasNext()) {
+            while (iterador.hasNext()) {
+                char c = iterador.next();
                 if (Character.isLetter(c)) {
                     System.out.printf("%s ", c);
                 }
@@ -129,7 +131,9 @@ public class JuegoAhorcado {
     }
 
     public boolean rondaTerminada() {
-        for (char c : fraseElegida.toCharArray()) {
+        Iterator<Character> iterador = fraseElegida.chars().mapToObj(c -> (char) c).iterator();
+        while (iterador.hasNext()) {
+            char c = iterador.next();
             if (!letrasDescubiertas.contains(c) && Character.isLetter(c)) return false;
         }
         return true;

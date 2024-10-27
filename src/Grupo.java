@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Grupo {
     private final ArrayList<Jugador> jugadores;
+    private Iterator<Jugador> iterador;
     private Jugador jugadorActual;
     private Jugador ganadorRonda;
     private Jugador ganadorJuego;
@@ -18,17 +20,11 @@ public class Grupo {
             return;
         }
 
-        if (jugadorActual == null) {
-            jugadorActual = jugadores.getFirst();
-            return;
+        if (jugadorActual == null || !iterador.hasNext()) {
+            iterador = jugadores.iterator();
         }
 
-        if (jugadorActual != jugadores.getLast()) {
-            jugadorActual = jugadores.get(jugadores.indexOf(jugadorActual)+1);
-        } else {
-            jugadorActual = jugadores.getFirst();
-        }
-
+        jugadorActual = iterador.next();
     }
 
     public void agregarJugador(Jugador jugador) {
@@ -41,8 +37,9 @@ public class Grupo {
 
     public int[] obtenerPuntosJugadores() {
         int[] puntos = new int[jugadores.size()];
-        for (int i = 0; i < puntos.length; i++) {
-            puntos[i] = jugadores.get(i).getPuntaje();
+        int i = 0;
+        for (Jugador jugador : jugadores) {
+            puntos[i++] = jugador.getPuntaje();
         }
         return puntos;
     }
@@ -51,7 +48,7 @@ public class Grupo {
         int puntajeMayor = Integer.MIN_VALUE;
         Jugador jugadorMayor = null;
         for (Jugador jugador : jugadores) {
-            if (jugador.getPuntaje() > puntajeMayor) {
+            if (jugador.getPuntaje() >= puntajeMayor) {
                 jugadorMayor = jugador;
                 puntajeMayor = jugador.getPuntaje();
             }
