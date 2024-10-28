@@ -2,13 +2,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BancoFrases {
-    ArrayList<String> frases;
+    private final ArrayList<String> frases;
 
+    /**
+     * Constructor predeterminado del banco de frases.
+     */
     public BancoFrases() {
         frases = new ArrayList<>();
         agregarFrases();
     }
 
+    /**
+     * Agrega una serie de 61 frases genéricas de 4 palabras o más.
+     */
     private void agregarFrases() {
         frases.add("EL SOL BRILLA FUERTE");
         frases.add("CORRIENDO POR EL PARQUE");
@@ -73,6 +79,10 @@ public class BancoFrases {
         frases.add("MI NOMBRE ES BOND, JAMES BOND");
     }
 
+    /**
+     * Elige una de las 61 frases y la regresa
+     * @return La frase elegida aleatoriamente
+     */
     public String darFraseAleatoria() {
         Random rng = new Random(System.currentTimeMillis());
         int indiceAleatorio = rng.nextInt(frases.size());

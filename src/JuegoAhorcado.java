@@ -16,6 +16,9 @@ public class JuegoAhorcado {
         letrasDescubiertas = new HashSet<>();
     }
 
+    /**
+     * Realiza todos los métodos necesarios para ejecutar un juego de Ahorcado en su totalidad.
+     */
     public void iniciarJuego() {
         int cantidadJugadores = introducirEntero("Ingrese el número de jugadores: ",2,4);
         crearYNombrarJugadores(cantidadJugadores);
@@ -44,6 +47,10 @@ public class JuegoAhorcado {
         declararGanadorJuego();
     }
 
+    /**
+     * Crea una cantidad de jugadores y nombra a cada uno de ellos.
+     * @param cantidad La cantidad elegida de jugadores.
+     */
     public void crearYNombrarJugadores(int cantidad) {
         for (int i = 0; i < cantidad; i++) {
             Jugador jugador = new Jugador(obtenerNombreJugador());
@@ -51,6 +58,11 @@ public class JuegoAhorcado {
         }
     }
 
+    /**
+     * Le pide al jugador indicado una letra para adivinar.
+     * @param jugador El jugador al que se le pide la letra.
+     * @return La letra que el jugador eligió.
+     */
     public char pedirLetra(Jugador jugador) {
         Scanner entrada = new Scanner(System.in);
         char letra;
@@ -64,6 +76,17 @@ public class JuegoAhorcado {
         return letra;
     }
 
+    /**
+     * Según las reglas de este juego de Ahorcado, se le dan o se le quitan puntos al jugador dependiendo de la letra ingresada.
+     * <p>
+     * Si el jugador eligió una letra ya adivinada anteriormente, se le restará 3 puntos.
+     * <p>
+     * Si el jugador elige una letra que está en la frase y no ha sido adivinada, se le sumará 3 puntos por cada vez que aparece en la frase.
+     * <p>
+     * Si el jugador elige una letra que no está en la frase y no ha sido adivinada, se le restará un solo punto.
+     * @param jugador El jugador al que se le atribuyen los puntos.
+     * @param letra La letra que el jugador eligió.
+     */
     public void darPuntos(Jugador jugador, char letra) {
         int puntosObtenidos;
         if (letrasDescubiertas.contains(letra)) {
@@ -83,11 +106,19 @@ public class JuegoAhorcado {
         }
     }
 
+    /**
+     * Se le suman 5 puntos al jugador que descubrió la frase completa con su turno.
+     */
     public void darPuntosGanadorRonda() {
         System.out.printf("¡El ganador de la ronda es %s! Se te sumó 5 puntos.%n", grupoJugadores.getGanadorRonda());
         grupoJugadores.getGanadorRonda().agregarPuntos(5);
     }
 
+    /**
+     * Muestra la frase parcialmente, mostrando solo las letras adivinadas.
+     * <p>
+     * Las letras que aún no se adivinan se muestran como guiones bajos.
+     */
     public void mostrarFraseDescubierta() {
         for (char c : fraseElegida.toCharArray()) {
             if (letrasDescubiertas.contains(c) && Character.isLetter(c)) {
@@ -101,10 +132,18 @@ public class JuegoAhorcado {
         System.out.println();
     }
 
+    /**
+     * Muestra los puntajes de cada jugador del grupo.
+     */
     public void mostrarPuntajes() {
         grupoJugadores.mostrarPuntajes();
     }
 
+    /**
+     * Muestra una lista con las letras que ya han sido jugadas anteriormente.
+     * <p>
+     * Esto es particularmente útil para evitar que un jugador vuelva a elegirla, aunque eso no los detendrá de intentarlo...
+     */
     public void mostrarLetrasDescubiertas() {
         System.out.println("Letras jugadas:");
         Iterator<Character> iterador = letrasDescubiertas.iterator();
@@ -120,16 +159,29 @@ public class JuegoAhorcado {
         }
     }
 
+    /**
+     * Inicializa todos los parámetros para iniciar una nueva ronda.
+     * <p>
+     * Se elige una nueva frase del banco de frases y se limpian las letras descubiertas.
+     */
     public void inicializarRonda() {
         fraseElegida = bancoFrases.darFraseAleatoria();
         letrasDescubiertas.clear();
     }
 
+    /**
+     * Elige al jugador con mayor puntuación como el ganador del juego y lo muestra en la consola
+     */
     public void declararGanadorJuego() {
         grupoJugadores.setGanadorJuego(grupoJugadores.obtenerJugadorMayorPuntaje());
         System.out.printf("¡El ganador del juego es %s!%n", grupoJugadores.getGanadorJuego());
     }
 
+    /**
+     * Determina si la ronda ha sido terminada.
+     * Una ronda se ha terminado cuando todas las letras de una frase ya han sido descubiertas.
+     * @return Verdadero, si la frase ha sido descubierta completamente; falso, si aún no se conoce toda la frase
+     */
     public boolean rondaTerminada() {
         Iterator<Character> iterador = fraseElegida.chars().mapToObj(c -> (char) c).iterator();
         while (iterador.hasNext()) {
@@ -139,6 +191,11 @@ public class JuegoAhorcado {
         return true;
     }
 
+    /**
+     * Indica si el juego ya ha sido terminado.
+     * El juego se termina cuando un jugador alcanza la meta de puntos y se termina la ronda en donde lo logra.
+     * @return Verdadero, si un jugador alcanza la meta de puntos; falso, si ningún jugador alcanza la meta de puntos al terminar la ronda.
+     */
     public boolean juegoTerminado() {
         int[] puntosJugadores = grupoJugadores.obtenerPuntosJugadores();
         for (int i : puntosJugadores) {
@@ -147,6 +204,13 @@ public class JuegoAhorcado {
         return false;
     }
 
+    /**
+     * Le pide al usuario ingresar un número para regresarlo.
+     * @param mensaje El mensaje que se le quiere mostrar al usuario para que este conozca para que se utilizará este número.
+     * @param minimo El intervalo mínimo del número a ingresar.
+     * @param maximo El intervalo máximo del número a ingresar. Si se coloca -1, se elimina este intervalo.
+     * @return El número que el usuario ingresó.
+     */
     private int introducirEntero(String mensaje, int minimo, int maximo) {
         Scanner entrada = new Scanner(System.in);
         int valor;
@@ -171,6 +235,10 @@ public class JuegoAhorcado {
         return valor;
     }
 
+    /**
+     * Pide al usuario que ingrese el nombre de un jugador.
+     * @return El nombre que ha ingresado el usuario.
+     */
     private String obtenerNombreJugador() {
         Scanner entrada = new Scanner(System.in);
         String nombre;
@@ -182,6 +250,11 @@ public class JuegoAhorcado {
         return nombre;
     }
 
+    /**
+     * Cuenta las veces que aparece una determinada letra en la frase elegida.
+     * @param letra La letra que se quiere contar.
+     * @return La cantidad de veces que aparece la letra en la frase.
+     */
     private int contarRepeticiones(char letra) {
         int contador = 0;
         for (char c : fraseElegida.toCharArray()) {
@@ -190,6 +263,11 @@ public class JuegoAhorcado {
         return contador;
     }
 
+    /**
+     * Permite saber si se encuentra una letra en la frase elegida.
+     * @param letra La letra que se quiere comprobar su existencia en la frase.
+     * @return Verdadero, si la letra está en la frase; falso, si no lo está.
+     */
     private boolean fraseContieneLetra(char letra) {
         return fraseElegida.indexOf(letra) >= 0;
     }
