@@ -257,8 +257,10 @@ public class JuegoAhorcado {
      */
     private int contarRepeticiones(char letra) {
         int contador = 0;
-        for (char c : fraseElegida.toCharArray()) {
-            if (c == letra) contador++;
+        for (int i = 0; i < fraseElegida.length(); i++) {
+            if (fraseElegida.charAt(i) == letra) {
+                contador++;
+            }
         }
         return contador;
     }
