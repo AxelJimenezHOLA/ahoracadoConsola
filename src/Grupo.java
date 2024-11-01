@@ -25,15 +25,19 @@ public class Grupo {
      * Después de esto, se ciclarán los turnos entre los jugadores del grupo.
      */
     public void cambiarTurno() {
-        if (jugadores.isEmpty()) {
-            return;
+        if (jugadores.isEmpty()) return;
+
+        if (jugadorActual != jugadores.getLast()) {
+            jugadorActual = jugadores.get(jugadores.indexOf(jugadorActual)+1);
+        } else {
+            jugadorActual = jugadores.getFirst();
         }
 
-        if (jugadorActual == null || !iterador.hasNext()) {
-            iterador = jugadores.iterator();
-        }
+    }
 
-        jugadorActual = iterador.next();
+    public void inicializarTurnos() {
+        if (jugadores.isEmpty()) return;
+        jugadorActual = jugadores.getFirst();
     }
 
     /**

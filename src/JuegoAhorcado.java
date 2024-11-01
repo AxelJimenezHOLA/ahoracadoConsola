@@ -27,7 +27,7 @@ public class JuegoAhorcado {
         while (!juegoTerminado()) {
             inicializarRonda();
             while (!rondaTerminada()) {
-                grupoJugadores.cambiarTurno();
+
                 Jugador jugadorActual = grupoJugadores.getJugadorActual();
                 System.out.println();
                 mostrarPuntajes();
@@ -36,7 +36,8 @@ public class JuegoAhorcado {
                 System.out.println();
                 mostrarFraseDescubierta();
                 System.out.println();
-                darPuntos(jugadorActual, pedirLetra(jugadorActual));
+                int puntosObtenidos = darPuntos(jugadorActual, pedirLetra(jugadorActual));
+                if (!obtuvoPuntos(puntosObtenidos)) grupoJugadores.cambiarTurno();
             }
             System.out.print("La frase era: ");
             mostrarFraseDescubierta();
@@ -86,8 +87,9 @@ public class JuegoAhorcado {
      * Si el jugador elige una letra que no está en la frase y no ha sido adivinada, se le restará un solo punto.
      * @param jugador El jugador al que se le atribuyen los puntos.
      * @param letra La letra que el jugador eligió.
+     * @return Verdadero, si el jugador ganó puntos; falso, si perdió puntos.
      */
-    public void darPuntos(Jugador jugador, char letra) {
+    public int darPuntos(Jugador jugador, char letra) {
         int puntosObtenidos;
         if (letrasDescubiertas.contains(letra)) {
             puntosObtenidos = -3;
@@ -104,6 +106,16 @@ public class JuegoAhorcado {
             System.out.printf("El jugador %s ha perdido 1 punto por no adivinar una letra...%n", jugador);
             jugador.agregarPuntos(puntosObtenidos);
         }
+        return puntosObtenidos;
+    }
+
+    /**
+     *
+     * @param puntos
+     * @return
+     */
+    public boolean obtuvoPuntos(int puntos) {
+        return puntos > 0;
     }
 
     /**
@@ -167,6 +179,7 @@ public class JuegoAhorcado {
     public void inicializarRonda() {
         fraseElegida = bancoFrases.darFraseAleatoria();
         letrasDescubiertas.clear();
+        grupoJugadores.inicializarTurnos();
     }
 
     /**
